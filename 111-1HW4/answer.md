@@ -1,12 +1,12 @@
 ﻿# 第4次作業-作業-HW4
 >
->學號：1234567 
+>學號：109111104 
 ><br />
->姓名：王小明 
+>姓名：李彥賓
 ><br />
->作業撰寫時間：180 (mins，包含程式撰寫時間)
+>作業撰寫時間：30 (mins，包含程式撰寫時間)
 ><br />
->最後撰寫文件日期：2022/10/12
+>最後撰寫文件日期：2022/12/17
 >
 
 本份文件包含以下主題：(至少需下面兩項，若是有多者可以自行新增)
@@ -23,8 +23,41 @@
 下段程式碼則為使用後結果：
 
 ```csharp
-public void mt_getResult(){
-    ...
+public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                s_Conns.Open();
+                SqlDataAdapter o_A = new SqlDataAdapter("SELECT * from Users", s_Conns);
+                DataSet o_Set = new DataSet();
+                o_A.Fill(o_Set, "zz");
+                gd_View.DataSource = o_Set;
+                gd_View.DataBind();
+                s_Conns.Close();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+        }
+
+        protected void btn_Insert_Click1(object sender, EventArgs e)
+        {
+            try
+            {
+                s_Conns.Open();
+                SqlCommand scom = new SqlCommand("Insert into Users(Name, Brithday)" + "Values(N'阿貓阿狗','2000/10/10');");
+                scom.ExecuteNonQuery();
+                s_Conns.Close();
+                Page_Load(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+        }
 }
 ```
 
@@ -32,22 +65,25 @@ public void mt_getResult(){
 下段程式碼則為使用後結果：
 
 ```html
-<%@ Page Language="C#" AutoEventWireup="true" ...>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="_111_1HW4.WebForm1" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta http-equiv="Content-Type" ...>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:Button ID="btn_Insert" runat="server" Text="點我新增資料夾" OnClick="btn_Insert_Click1" />
+            <asp:GridView ID="gd_View" runat="server"></asp:GridView>
         </div>
     </form>
 </body>
 </html>
+
 ```
 
 
@@ -56,3 +92,4 @@ public void mt_getResult(){
 開始寫說明，需要說明本次作業個人覺得需學會那些觀念 (需寫成文章，需最少50字，
 並且文內不得有你、我、他三種文字)
 
+學會建立資料庫，學會Sql指令。
